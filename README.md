@@ -6,15 +6,18 @@ GitFlow를 검색하면 자주 접하게 되는 유명한 이미지인데, 여�
 처음 깃허브 프로젝트를 생성하면 main 브랜치 하나밖에 없다.  
 
     $ git branch -a
-
-![branch-a](imgs/branch_-a.png)  
-
+```bash
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+```
 파일을 하나 생성한다.  
 
     $ echo 'Hello Gitflow' > app.txt  
     $ cat app.txt
-
-![cat_app_txt](imgs/cat_app_txt.png)  
+```bash
+Hello Gitflow
+```
 
 커밋 후 v0.1 태그  
 
@@ -23,14 +26,23 @@ GitFlow를 검색하면 자주 접하게 되는 유명한 이미지인데, 여�
     $ git tag v0.1  
     $ git log  
 
-![tag_v0_1](imgs/tag_v0_1.png)  
+```bash
+commit HASHKEY (HEAD -> main, tag: v0.1)
+Author: yyyongdev
+Date Fri Sep 30 21:46:28 2022 +0900
+
+    first commit
+```
 
 develop 브랜치 생성 후 체크아웃  
 
     $ git checkout -b develop  
     $ git branch  
 
-![branch_develop](imgs/branch_develop.png)  
+```bash
+* develop
+  main
+```
 
 develop 브랜치 작업  
 
@@ -45,7 +57,10 @@ develop 브랜치 작업
     $ git commit -m "dev 2" 
     $ cat app.txt  
 
-![dev1](imgs/dev2.png)  
+```bash
+Hello Gitflow
+Dev2
+```
 
 feature/future 브랜치 작업 시작  
 
@@ -55,7 +70,9 @@ feature/future 브랜치 작업 시작
     $ git commit -m "future 0" 
     $ cat future.txt       
 
-![future0](imgs/future0.png)  
+```bash
+working..
+```
 
 feature/next 브랜치 작업 시작  
 
@@ -66,7 +83,9 @@ feature/next 브랜치 작업 시작
     $ git commit -m "next 0"  
     $ cat next.txt  
 
-![next0](imgs/next0.png)  
+```bash
+coding..
+```
 
 develop 브랜치 작업 
 
@@ -75,7 +94,10 @@ develop 브랜치 작업
     $ git add .  
     $ git commit -m "dev 3"   
 
-![dev3](imgs/dev3.png)  
+```bash
+Hello Gitflow
+Dev3
+```
 
 main 브랜치 hotfix 작업
 
@@ -85,7 +107,10 @@ main 브랜치 hotfix 작업
     $ git commit -m "hotfix"  
     $ cat app.txt  
 
-![hotfix](imgs/hotfix.png)  
+```bash
+Hello Gitflow
+Hotfix
+```
 
 hotfix 브랜치를 main 브랜치에 fastforward merge 하고 v0.2 태그  
 
@@ -94,17 +119,36 @@ hotfix 브랜치를 main 브랜치에 fastforward merge 하고 v0.2 태그
     $ git tag v0.2
     $ cat app.txt  
 
-![hotfix](imgs/hotfix.png)  
+```bash
+Hello Gitflow
+Hotfix
+```
 
 hotfix 브랜치를 develop 브랜치에 3way merge  
 
     $ git checkout develop  
     $ git merge --no-ff hotfix  
     
-conflict 발생  
-![conflict](/imgs/conflict.png)  
+app.txt conflict이 발생 
+```bash
+Auto-merging app.txt
+CONFLICT (content): Merge conflict in app.txt
+Automatic merge failed; fix conflicts and then commit the result.
+```
+conflct 확인
 
-conflict 해결  
+    $ cat app.txt
+
+```bash
+Hello Gitflow
+<<<<<< HEAD
+Hev3
+======
+Hotfix
+>>>>>> hotfix
+```
+
+conflict 해결 (여기서는 opendiff 툴을 사용했지만 수동 or 익숙한 툴 사용하면 된다)
 
     $ git mergetool -t opendiff  
     $ git rm app.txt.orig  
@@ -123,7 +167,11 @@ conflict 해결
     $ git commit -m "next 2"  
     $ cat next.txt  
 
-![next2](imgs/next2.png)   
+```bash
+coding..
+coding...
+coding....
+```
 
 feature/next 브랜치를 develop 브랜치에 3way merge  
 
@@ -131,7 +179,9 @@ feature/next 브랜치를 develop 브랜치에 3way merge
     $ git merge --no-ff feature/next  
     $ ls  
 
-![next_ls](imgs/next_ls.png)   
+```bash
+README.md  app.txt  next.txt
+```
 
 release 브랜치 생성  
 
@@ -144,7 +194,12 @@ release 브랜치 버그 수정
     $ git commit -m "bugfix next.txt"  
     $ cat next.txt  
 
-![next_bugfix](imgs/next_bugfix.png)   
+```bash
+coding..
+coding...
+coding....
+bugfix
+```
 
 release 브랜치를 develop 브랜치에 3way merge  
 
@@ -166,7 +221,15 @@ feature/next 브랜치 추가 작업 시작
     $ git commit -m "next 5"  
     $ cat next.txt  
 
-![next5](imgs/next5.png)   
+```bash
+coding..
+coding...
+coding....
+bugfix
+coding!
+coding!!
+coding!!!
+```
 
 release 브랜치 버그 수정  
 
@@ -179,7 +242,19 @@ release 브랜치 버그 수정
     $ git commit -m "bugfix next.txt"  
     $ cat <(echo '-- app.txt --') app.txt <(echo '-- next.txt --') next.txt  
 
-![cat_app_next](imgs/cat_app_next.png)   
+```bash
+-- app.txt --
+Hello Gitflow
+Dev3
+Hotfix
+Bugfix
+-- next.txt --
+coding..
+coding...
+coding....
+bugfix
+bugfix
+``` 
 
 release 브랜치를 main 브랜치에 fastforward merge 하고 v1.0 태그  
 
@@ -197,11 +272,27 @@ feature/next 브랜치를 develop 브랜치에 3way merge
     $ git checkout develop  
     $ git merge --no-ff feature/next  
 
-conflict 발생   
+next.txt conflict 발생   
+```bash
+Auto-merging next.txt
+CONFLICT (content): Merge conflict in next.txt
+Automatic merge failed; fix conflicts and then commit the result.
+```
 
+상태 확인
+    
     $ git status  
 
-![conflict_status](imgs/conflict_status.png)   
+```bash
+On branch develop
+You have unmerged paths.
+    (fix conflicts and run "git commit")
+    (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+    (use "git add <file>..." to mark resolution)
+        both modified:  next.txt
+```
 
 conflict 해결  
 
@@ -220,12 +311,17 @@ feature/future 브랜치 작업
     $ echo 'working....' >> future.txt  
     $ git add .  
     $ git commit -m "future 2"  
-    $ echo 'working....' >> future.txt  
+    $ echo 'working.....' >> future.txt  
     $ git add .  
     $ git commit -m "future 3"  
     $ cat future.txt  
     
-![future3](imgs/future3.png)   
+```bash
+working..
+working...
+working....
+working.....
+```
 
 feature/future 브랜치를 develop 브랜치에 3way merge  
 
@@ -237,7 +333,13 @@ develop 브랜치를 release 브랜치에 fastforward merge
     $ git checkout release  
     $ git merge --ff-only develop  
 
-![dev_rel_merged](imgs/dev_rel_merged.png)   
+```bash
+Updateing ae5f5d8..79a6f5d
+Fast-forward
+  future.txt | 4 ++++
+  next.txt   | 3 +++
+  2 files changed. 7 insertions(+)
+```
 
 release 브랜치를 main 브랜치에 fastforward merge 하고 v1.1 태그  
 
@@ -249,4 +351,44 @@ release 브랜치를 main 브랜치에 fastforward merge 하고 v1.1 태그
 
     $ git log --graph --oneline  
 
-![git_log](imgs/git_log.png)   
+```bash
+*   79a6f5d (tag: v1.1, origin/release, origin/develop, release, develop) Merge branch 'feature/future' into develop
+|\  
+| * 595e761 (origin/feature/future, feature/future) future 3
+| * a15c52f future 2
+| * eed7e4c future 1
+| * bd93095 future 0
+* |   041cbd4 merge feature/next
+|\ \  
+| * | 22aa66c (origin/feature/next, feature/next) next 5
+| * | 51ee918 next 4
+| * | fa9c4b3 next 3
+* | |   af05d2f Merge branch 'release' into develop
+|\ \ \  
+| |/ /  
+|/| |   
+| * | ae5f5d8 (tag: v1.0) bugfix next.txt
+| * | 24567f4 bugfix app.txt
+* | | ea88e75 Merge branch 'release' into develop
+|\| | 
+| * | ad7acc0 bugfix next.txt
+|/ /  
+* |   0d21930 Merge branch 'feature/next' into develop
+|\ \  
+| * | db5072c next 2
+| * | 664f702 next 1
+| * | e2d3eaf next 0
+| |/  
+* |   fec9571 merge hotfix
+|\ \  
+| * | 10678ef (tag: v0.2, origin/hotfix, hotfix) hotfix
+* | | 0828a4f dev 3
+| |/  
+|/|   
+* | bfb041b dev 2
+* | c42735e dev 1
+* | b1fbcb8 dev 0
+|/  
+* 8b0dc7e (tag: v0.1) first commit
+* 6ccdbf2 Initial commit
+```
