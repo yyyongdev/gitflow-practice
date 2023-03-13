@@ -1,7 +1,14 @@
 # gitflow-practice
 GitFlow를 검색하면 자주 접하게 되는 유명한 이미지인데, 여기에 나온 흐름을 직접 똑같이 따라 해보자.  
-(이미지 출처 : https://nvie.com/posts/a-successful-git-branching-model/)  
+
+이미지 출처 : [nvie](https://nvie.com/posts/a-successful-git-branching-model/) 
+
 ![gitflow](http://nvie.com/img/git-model@2x.png)  
+
+
+### 개발 도구
+- Mac OS, Terminal, Git, OpenDiff
+
 
 처음 깃허브 프로젝트를 생성하면 main 브랜치 하나밖에 없다.  
 
